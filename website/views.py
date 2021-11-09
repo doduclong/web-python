@@ -21,12 +21,12 @@ def create_post():
         text = request.form.get('text')
 
         if not text:
-            flash('Post cannot be empty', category='error')
+            flash('Bài viết không được để trống!', category='error')
         else:
             post = Post(text=text, author=current_user.id)
             db.session.add(post)
             db.session.commit()
-            flash('Post created!', category='success')
+            flash('Tạo bài viết thành công!', category='success')
             return redirect(url_for('views.home'))
 
     return render_template('create_post.html', user=current_user)
@@ -37,14 +37,12 @@ def create_post():
 def delete_post(id):
     post = Post.query.filter_by(id=id).first()
 
-    if not post:
-        flash("Post does not exist.", category='error')
-    elif current_user.id != post.id:
-        flash('You do not have permission to delete this post.', category='error')
+    if current_user.id != post.id:
+        flash('Bạn không có quyền xóa bài viết này!', category='error')
     else:
         db.session.delete(post)
         db.session.commit()
-        flash('Post deleted.', category='success')
+        flash('Đã xóa bài viết!', category='success')
 
     return redirect(url_for('views.home'))
 
@@ -53,10 +51,6 @@ def delete_post(id):
 @login_required
 def posts(username):
     user = User.query.filter_by(username=username).first()
-
-    if not user:
-        flash('No user with that username exists.', category='error')
-        return redirect(url_for('views.home'))
 
     posts = user.posts
     return render_template("posts.html", user=current_user, posts=posts, username=username)
@@ -68,16 +62,14 @@ def create_comment(post_id):
     text = request.form.get('text')
 
     if not text:
-        flash('Comment cannot be empty.', category='error')
+        flash('Bình luận không được để trống!', category='error')
     else:
-        post = Post.query.filter_by(id=post_id)
-        if post:
-            comment = Comment(
-                text=text, author=current_user.id, post_id=post_id)
-            db.session.add(comment)
-            db.session.commit()
-        else:
-            flash('Post does not exist.', category='error')
+
+        comment = Comment(
+            text=text, author=current_user.id, post_id=post_id)
+        db.session.add(comment)
+        db.session.commit()
+
 
     return redirect(url_for('views.home'))
 
@@ -87,10 +79,8 @@ def create_comment(post_id):
 def delete_comment(comment_id):
     comment = Comment.query.filter_by(id=comment_id).first()
 
-    if not comment:
-        flash('Comment does not exist.', category='error')
-    elif current_user.id != comment.author and current_user.id != comment.post.author:
-        flash('You do not have permission to delete this comment.', category='error')
+    if current_user.id != comment.author and current_user.id != comment.post.author:
+        flash('Bạn không có quyền xóa bình luận này!', category='error')
     else:
         db.session.delete(comment)
         db.session.commit()
