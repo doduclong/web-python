@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
 %}
-<h1 align="center">{% block header %}Posts{% endblock %}</h1>
+<h1 align="center">{% block header %}Bài viết{% endblock %}</h1>
 <div id="posts">
   {% for post in posts %}
   <div class="card border-dark">
@@ -15,7 +15,7 @@
         ></button>
         <ul class="dropdown-menu">
           <li>
-            <a href="/delete-post/{{post.id}}" class="dropdown-item">Delete</a>
+            <a href="/delete-post/{{post.id}}" class="dropdown-item">Xóa</a>
           </li>
         </ul>
       </div>
@@ -48,7 +48,7 @@
                       <a
                         href="/delete-comment/{{comment.id}}"
                         class="dropdown-item"
-                        >Delete</a
+                        >Xóa</a
                       >
                     </li>
                   </ul>
@@ -63,10 +63,10 @@
       <p class="card-text">
         {% if post.comments|length > 0 %}
         <a data-bs-toggle="collapse" href="#comments-{{post.id}}" role="button">
-          <small>View {{post.comments|length}} Comments</small>
+          <small>Xem {{post.comments|length}} Bình luận</small>
         </a>
         {% else %}
-        <small class="text-muted">No Comments</small>
+        <small class="text-muted">Không có bình luận</small>
         {% endif %}
       </p>
       <form
@@ -79,9 +79,9 @@
           id="text"
           name="text"
           class="form-control"
-          placeholder="Comment something!"
+          placeholder="Viết bình luận!"
         />
-        <button type="submit" class="btn btn-primary">Comment</button>
+        <button type="submit" class="btn btn-primary">Bình luận</button>
       </form>
     </div>
     <div class="card-footer text-muted">{{post.date_created}}</div>
@@ -92,7 +92,7 @@
 <div align="center">
   <a href="/create-post"
     ><button type="button" class="btn btn-primary btn-lg">
-      Create a Post
+      Tạo bài viết
     </button></a
   >
 </div>
